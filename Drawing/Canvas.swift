@@ -1,0 +1,75 @@
+//
+//  Canvas.swift
+//  Drawing
+//
+//  Created by Shashwat  on 03/04/19.
+//  Copyright © 2019 Shashwat . All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+class Canvas : UIView {
+    
+    var chosenColor : UIColor!
+    
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        //        let startingPoint = CGPoint(x: 0, y: 0)
+        //        let finalPoint = CGPoint(x: 100, y: 100)
+        //        context.move(to: startingPoint)
+        //        context.addLine(to: finalPoint)
+        lines.forEach { (line) in
+            for (i,p) in line.enumerated() {
+                if i == 0 {
+                    context.move(to: p)
+                }else {
+                    context.addLine(to: p)
+            
+                }
+            }
+        }
+        
+        context.setLineWidth(5)
+        context.setStrokeColor(chosenColor.cgColor)
+        context.strokePath()
+    }
+    
+    var lines = [[CGPoint]]()
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lines.append([CGPoint]())
+    }
+    
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let point = touches.first?.location(in: nil) else {return}
+        guard var lastLine = lines.popLast() else { return }
+        lastLine.append(point)
+        lines.append(lastLine)
+        setNeedsDisplay()
+    }
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init(frame: CGRect, withColor : UIColor) {
+        self.init(frame : frame)
+        chosenColor = withColor
+    }
+    
+    func cleanCanvas()  {
+        lines.removeAll()
+        setNeedsDisplay()
+    }
+    
+    
+}
