@@ -13,6 +13,7 @@
 		CA07540E22551F5300A98A94 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA07540D22551F5300A98A94 /* Assets.xcassets */; };
 		CA07541122551F5300A98A94 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA07540F22551F5300A98A94 /* LaunchScreen.storyboard */; };
 		CA0754192255256500A98A94 /* Canvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0754182255256500A98A94 /* Canvas.swift */; };
+		CACEFED82256727900ED2B71 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEFED72256727900ED2B71 /* Line.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		CA07541022551F5300A98A94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA07541222551F5300A98A94 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA0754182255256500A98A94 /* Canvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Canvas.swift; sourceTree = "<group>"; };
+		CACEFED72256727900ED2B71 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				CA07540622551F5100A98A94 /* AppDelegate.swift */,
 				CA07540822551F5100A98A94 /* ViewController.swift */,
+				CACEFED72256727900ED2B71 /* Line.swift */,
 				CA0754182255256500A98A94 /* Canvas.swift */,
 				CA07540A22551F5100A98A94 /* Main.storyboard */,
 				CA07540D22551F5300A98A94 /* Assets.xcassets */,
@@ -139,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA07540922551F5100A98A94 /* ViewController.swift in Sources */,
+				CACEFED82256727900ED2B71 /* Line.swift in Sources */,
 				CA07540722551F5100A98A94 /* AppDelegate.swift in Sources */,
 				CA0754192255256500A98A94 /* Canvas.swift in Sources */,
 			);

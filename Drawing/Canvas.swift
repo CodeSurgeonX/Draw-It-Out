@@ -12,6 +12,7 @@ import UIKit
 class Canvas : UIView {
     
     var chosenColor : UIColor!
+    var chosenWidth : Float!
     
     
     override func draw(_ rect: CGRect) {
@@ -22,32 +23,39 @@ class Canvas : UIView {
         //        context.move(to: startingPoint)
         //        context.addLine(to: finalPoint)
         lines.forEach { (line) in
-            for (i,p) in line.enumerated() {
+            context.setLineWidth(CGFloat(line.width))
+            context.setStrokeColor(line.color.cgColor)
+            context.setLineCap(.round)
+            for (i,p) in line.points.enumerated() {
                 if i == 0 {
                     context.move(to: p)
                 }else {
                     context.addLine(to: p)
-            
+                    
                 }
+                
             }
+            context.strokePath()
         }
-        
-        context.setLineWidth(5)
-        context.setStrokeColor(chosenColor.cgColor)
-        context.strokePath()
+//        lines.forEach { (line) in
+//            for (i,p) in line.enumerated() {
+//            }
+//        }
+//
+       
     }
     
-    var lines = [[CGPoint]]()
+    fileprivate var lines = [Line]()
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        lines.append([CGPoint]())
+        lines.append(Line(color: chosenColor, width: chosenWidth, points: []))
     }
     
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let point = touches.first?.location(in: nil) else {return}
         guard var lastLine = lines.popLast() else { return }
-        lastLine.append(point)
+        lastLine.points.append(point)
         lines.append(lastLine)
         setNeedsDisplay()
     }
@@ -64,10 +72,16 @@ class Canvas : UIView {
     convenience init(frame: CGRect, withColor : UIColor) {
         self.init(frame : frame)
         chosenColor = withColor
+        chosenWidth = 1
     }
     
     func cleanCanvas()  {
         lines.removeAll()
+        setNeedsDisplay()
+    }
+    
+    func undoCanvas() {
+       let _ =  lines.popLast()
         setNeedsDisplay()
     }
     

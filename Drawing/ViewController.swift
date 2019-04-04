@@ -23,6 +23,26 @@ class ViewController: UIViewController {
         button.setTitleColor(.blue, for: .normal)
         return button
     }()
+    
+    lazy var undoButton : UIButton = {
+        let button =  UIButton()
+        button.setTitle("Undo", for: .normal)
+        button.addTarget(self, action: #selector(undoCanvas), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(.blue, for: .normal)
+        return button
+    }()
+    
+    lazy var widthSlider : UISlider = {
+        let slider = UISlider()
+        slider.minimumValue = 1
+        slider.maximumValue = 10
+        slider.addTarget(self, action: #selector(setWidth), for: .valueChanged)
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        return slider
+    }()
+    
+    
     lazy var colorPallete : UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -32,6 +52,8 @@ class ViewController: UIViewController {
         cv.dataSource = self
         cv.register(CustomCell.self, forCellWithReuseIdentifier: "Reusable Cell")
         cv.bounces = true
+//        cv.allowsSelection = true
+//        cv.allowsMultipleSelection = false
         return cv
         
     }()
@@ -61,10 +83,30 @@ class ViewController: UIViewController {
         clearButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 0).isActive = true
         clearButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         clearButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.view.addSubview(undoButton)
+        undoButton.leftAnchor.constraint(equalToSystemSpacingAfter: view.leftAnchor, multiplier: 0).isActive = true
+        undoButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 0).isActive = true
+        undoButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        undoButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        view.addSubview(widthSlider)
+        widthSlider.leftAnchor.constraint(equalToSystemSpacingAfter: undoButton.rightAnchor, multiplier: 0).isActive = true
+        widthSlider.rightAnchor.constraint(equalToSystemSpacingAfter: clearButton.leftAnchor, multiplier: 0).isActive = true
+        widthSlider.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 0).isActive = true
+        widthSlider.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
     }
     
     @objc func  cleanCanvas(){
         canvas.cleanCanvas()
+    }
+    
+    @objc func undoCanvas(){
+        canvas.undoCanvas()
+    }
+    
+    @objc func setWidth() {
+        canvas.chosenWidth = widthSlider.value
     }
 
 
@@ -86,18 +128,34 @@ extension ViewController : UICollectionViewDataSource, UICollectionViewDelegate,
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         canvas.chosenColor = colorsSelection[indexPath.row]
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.isSelected = true
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 50, height: 50)
     }
    
-    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.isSelected = false
+    }
   
     
 }
 
 class CustomCell : UICollectionViewCell {
-    
+    override var isSelected: Bool {
+        didSet{
+            if isSelected == true {
+                self.layer.borderWidth = 4.0
+                self.layer.borderColor = UIColor.blue.cgColor
+            }else{
+                self.layer.borderColor = UIColor.white.cgColor
+                self.layer.borderWidth = 1
+            }
+            
+        }
+    }
 }
 
